@@ -13,9 +13,7 @@ nltk.download('machado')  # textos de exemplo
 class MachadoAssis():
 
     def __init__(self) -> None:
-        # https://www.milindsoorya.com/blog/introduction-to-word-frequencies-in-nlp
         self.stopwords = nltk.corpus.stopwords.words('portuguese')
-
         self.raw_text = machado.raw('romance/marm05.txt')
 
     def contaLetras(self):
