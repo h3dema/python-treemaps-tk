@@ -48,6 +48,8 @@ Uma janela com gráficos lado a lado:
 python3 grid.py
 ```
 
+![Grid](imagens/grid.png)
+
 ### Versão 2
 
 Uma janela com com menu de botoes:
@@ -56,6 +58,8 @@ Uma janela com com menu de botoes:
 python3 stack.py
 ```
 
+![Stack](imagens/stack.png)
+
 ### Versão 3
 
 Uma janela com guias:
@@ -63,3 +67,5 @@ Uma janela com guias:
 ```
 python3 tabs.py
 ```
+
+![Tabs](imagens/tabs.png)
