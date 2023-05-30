@@ -2,7 +2,7 @@ import sys
 from tkinter import *
 
 from texto import MachadoAssis
-from treemaps import PageTreemapWords, PageTreemapLetters
+from stack import PageTreemapWords, PageTreemapLetters
 
 
 if __name__ == "__main__":
