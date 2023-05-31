@@ -6,8 +6,15 @@ from nltk.probability import FreqDist
 from nltk.corpus import machado
 
 
-nltk.download('stopwords')  # stop words
-nltk.download('machado')  # textos de exemplo
+# carrega as stop words
+nltk.download('stopwords')
+
+# textos de exemplo de Machado de Assis
+# usa PortugueseCategorizedPlaintextCorpusReader() de nltk
+# lista de textos em https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/index.xml
+# veja comentario em default_download_dir() para localizar o diretório onde os dados são copiados
+# em nosso caso: ~/nltk_data/corpora/
+nltk.download('machado')
 
 
 class MachadoAssis():
@@ -18,19 +25,18 @@ class MachadoAssis():
 
     def contaLetras(self):
         """
-            conta letras
-
+            conta letras - distribuição de frequencias
         """
-        fdist = FreqDist(self.raw_text)
+        fdist = FreqDist(self.raw_text)  # https://www.nltk.org/api/nltk.probability.FreqDist.html
         _groups = fdist.keys()
         _frequencies = fdist.values()
 
         return _groups, _frequencies
 
     def obtemTokens(self):
-        #
-        # conta palavras
-        #
+        """
+            obtem as palavras no texto
+        """
         token = re.findall('\w+', self.raw_text)
 
         words = []
@@ -52,6 +58,9 @@ class MachadoAssis():
         return nlp_words
 
     def contaPalavras(self, N: int = None):
+        """
+            conta palavras - distribuição de frequencias
+        """
         nlp_words = self.obtemTokens()
 
         _groups = list(nlp_words.keys())
@@ -61,6 +70,3 @@ class MachadoAssis():
             _frequencies = _frequencies[:N]
 
         return _groups, _frequencies
-
-    def plot(self):
-        pass

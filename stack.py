@@ -2,13 +2,12 @@ import os
 import platform
 import matplotlib
 
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-
 import tkinter as tk
 from tkinter import ttk
 
 from texto import MachadoAssis
-from plots import plot_treemap_letters, plot_treemap_words
+from page_treemaps import PageTreemapLetters, PageTreemapWords
+from page_treemaps import DEFAULT_FONT
 
 import warnings
 # para ocultar algumas mensagens do Tkinter
@@ -16,9 +15,6 @@ warnings.filterwarnings('ignore', category=UserWarning)
 
 # precisamos informar ao matplotlib para ele utilizar Tk
 matplotlib.use("TkAgg")
-
-# fonte padrão do texto nas imagens
-DEFAULT_FONT = ("Verdana", 12)
 
 # o icon da janela precisa do caminho completo (Linux)
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -33,9 +29,9 @@ class Controller(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
 
         if 'windows' in platform.platform().lower():
-            tk.Tk.iconbitmap(self, default="matplotlib.ico")  # Windows
+            tk.Tk.iconbitmap(self, default="icons/matplotlib.ico")  # Windows
         elif 'linux' in platform.platform().lower():
-            tk.Tk.iconbitmap(self, f"@{CURRENT_PATH}/matplotlib.xbm")
+            tk.Tk.iconbitmap(self, f"@{CURRENT_PATH}/icons/matplotlib.xbm")
         else:
             raise Exception('Platform not supported')
         tk.Tk.wm_title(self, "Treemaps examples")
@@ -75,7 +71,7 @@ class Controller(tk.Tk):
         frame.tkraise()
         self.currPage = newPage  # atualiza qual é a página corrente
         self.container.pack()
-        print("->", newPage, frame)
+        # print("->", newPage, frame)
 
 
 class StartPage(tk.Frame):
@@ -98,65 +94,10 @@ class StartPage(tk.Frame):
                 width=100,
             )
             buttons[i].pack()
-            print(f"Button #{i}: {frame_description}")
-
-
-class PageTreemapLetters(tk.Frame):
-
-    __description__ = "Treemap com letras"
-
-    def __init__(self, parent, controller, texto, *args, **kwargs):
-        self.texto = texto
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Treemap com letras", font=DEFAULT_FONT)
-        label.pack(pady=10, padx=10)
-
-        f = plot_treemap_letters(texto)
-
-        canvas = FigureCanvasTkAgg(f, self)
-        toolbar = NavigationToolbar2Tk(canvas, self)
-
-        toolbar.update()
-        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-
-        canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-
-        if controller is not None:
-            button1 = ttk.Button(self,
-                                 text="Back to menu",
-                                 command=lambda: controller.show_frame(0))
-            button1.pack()
-
-
-class PageTreemapWords(tk.Frame):
-
-    __description__ = "Treemap com palavras"
-
-    def __init__(self, parent, controller, texto, N, *args, **kwargs):
-        self.texto = texto
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Treemap com palavras", font=DEFAULT_FONT)
-        label.pack(pady=10, padx=10)
-
-        f = plot_treemap_words(texto, N)
-
-        canvas = FigureCanvasTkAgg(f, self)
-        toolbar = NavigationToolbar2Tk(canvas, self)
-
-        toolbar.update()
-        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-
-        canvas.draw()
-        canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
-
-        if controller is not None:
-            button1 = ttk.Button(self,
-                                 text="Back to menu",
-                                 command=lambda: controller.show_frame(0))
-            button1.pack()
+            # print(f"Button #{i}: {frame_description}")
 
 
 if __name__ == "__main__":
     app = Controller(pages=[PageTreemapLetters, PageTreemapWords])
+    app.eval('tk::PlaceWindow . center')
     app.mainloop()
